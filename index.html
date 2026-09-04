@@ -1,0 +1,53 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Moving Box Label &amp; Count Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <h1>Moving Box Label &amp; Count Tracker</h1>
+      <p class="tagline">Label each box and keep a running tally by room.</p>
+    </header>
+
+    <section class="storage-error" id="error-banner" role="alert" hidden>
+      <p id="error-message"></p>
+      <button id="retry-error" type="button">Try again</button>
+    </section>
+
+    <section class="summary" aria-label="Room totals" aria-live="polite">
+      <h2>Room totals</h2>
+      <ul id="summary-list" class="summary-list"></ul>
+    </section>
+
+    <form id="box-form" class="box-form" novalidate>
+      <label for="box-label">Box label</label>
+      <input id="box-label" name="label" required maxlength="120" autocomplete="off"
+             placeholder="e.g. Kitchen – Fragile">
+      <label for="box-room">Room</label>
+      <select id="box-room" name="room">
+        <option value="Kitchen" selected>Kitchen</option>
+        <option value="Bedroom">Bedroom</option>
+        <option value="Bathroom">Bathroom</option>
+        <option value="Living Room">Living Room</option>
+        <option value="Other">Other</option>
+      </select>
+      <button type="submit" class="add-btn">Add Box</button>
+      <p id="form-error" class="form-error" role="alert" hidden></p>
+    </form>
+
+    <section class="boxes" aria-labelledby="boxes-title">
+      <h2 id="boxes-title">Boxes</h2>
+      <div id="box-empty" class="empty-state" hidden>
+        <p>No boxes yet.</p>
+        <button id="empty-cta" type="button">Log your first box</button>
+      </div>
+      <ul id="box-list" class="box-list" aria-labelledby="boxes-title"></ul>
+    </section>
+  </main>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
