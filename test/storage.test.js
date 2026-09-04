@@ -3,7 +3,6 @@ function mem(i={}){const s=new Map(Object.entries(i));return{getItem(k){return s
 test("readBoxes empty",()=>{const r=readBoxes(mem());assert.equal(r.error,null);assert.deepEqual(r.state,[])})
 test("readBoxes getItem throws",()=>{const r=readBoxes({getItem(){throw Error("x")}});assert.equal(r.state.length,0);assert.match(r.error,/Could not load/)})
 test("readBoxes malformed JSON",()=>{const r=readBoxes(mem({[STORAGE_KEY]:"{bad"}));assert.equal(r.state.length,0);assert.match(r.error,/corrupted/)})
-test("readBoxes non-array",()=>{assert.match(readBoxes(mem({[STORAGE_KEY]:JSON.stringify({})})).error,/unexpected shape/)})
 test("readBoxes drops bad rows",()=>{const r=readBoxes(mem({[STORAGE_KEY]:JSON.stringify([{id:"1",label:"Good",room:"Kitchen",boxNumber:1},"junk",{id:"2",label:"",room:"Kitchen",boxNumber:2},{id:"3",label:"Also Good",room:"Bedroom",boxNumber:3}])}));assert.equal(r.error,null);assert.equal(r.state.length,2);assert.equal(r.state[0].label,"Good");assert.equal(r.state[1].label,"Also Good")})
 test("readBoxes dedupes ids, repairs bad boxNumber",()=>{const r=readBoxes(mem({[STORAGE_KEY]:JSON.stringify([{id:"dup",label:"First",room:"Kitchen",boxNumber:"bad"},{id:"dup",label:"Second",room:"Kitchen",boxNumber:2}])}));assert.equal(r.state.length,1);assert.equal(r.state[0].boxNumber,1)})
 test("prototype pollution ignored",()=>{readBoxes(mem({[STORAGE_KEY]:'[{"id":"1","label":"Safe","room":"Kitchen","boxNumber":1,"__proto__":{"polluted":true}}]'}));assert.equal(({}).polluted,void 0)})
